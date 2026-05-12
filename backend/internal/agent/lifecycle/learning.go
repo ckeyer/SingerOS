@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/insmtx/Leros/backend/events"
 	"github.com/insmtx/Leros/backend/internal/agent"
-	"github.com/insmtx/Leros/backend/runtime/events"
 )
 
 const (

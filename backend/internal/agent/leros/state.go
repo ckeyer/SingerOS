@@ -1,9 +1,9 @@
 package leros
 
 import (
+	"github.com/insmtx/Leros/backend/events"
 	"github.com/insmtx/Leros/backend/internal/agent"
 	einoadapter "github.com/insmtx/Leros/backend/internal/agent/eino"
-	"github.com/insmtx/Leros/backend/runtime/events"
 )
 
 type runState struct {

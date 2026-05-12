@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/insmtx/Leros/backend/config"
-	agentruntime "github.com/insmtx/Leros/backend/internal/agent/runtime"
+	agentruntime "github.com/insmtx/Leros/backend/internal/agent/service"
 	"github.com/insmtx/Leros/backend/internal/infra/mq"
 	"github.com/insmtx/Leros/backend/internal/worker/taskconsumer"
 	"github.com/spf13/cobra"

@@ -10,7 +10,7 @@ import (
 
 	"github.com/insmtx/Leros/backend/config"
 	"github.com/insmtx/Leros/backend/internal/agent"
-	agentruntime "github.com/insmtx/Leros/backend/internal/agent/runtime"
+	agentruntime "github.com/insmtx/Leros/backend/internal/agent/service"
 	"github.com/ygpkg/yg-go/logs"
 )
 

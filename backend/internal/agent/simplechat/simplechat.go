@@ -8,8 +8,8 @@ import (
 	einomodel "github.com/cloudwego/eino/components/model"
 	einoschema "github.com/cloudwego/eino/schema"
 	"github.com/insmtx/Leros/backend/config"
+	"github.com/insmtx/Leros/backend/events"
 	"github.com/insmtx/Leros/backend/internal/agent"
-	"github.com/insmtx/Leros/backend/runtime/events"
 	einoadapter "github.com/insmtx/Leros/backend/internal/agent/eino"
 	"github.com/ygpkg/yg-go/logs"
 )

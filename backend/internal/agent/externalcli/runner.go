@@ -10,9 +10,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/insmtx/Leros/backend/config"
+	"github.com/insmtx/Leros/backend/engines"
+	"github.com/insmtx/Leros/backend/events"
 	"github.com/insmtx/Leros/backend/internal/agent"
-	"github.com/insmtx/Leros/backend/runtime/events"
-	"github.com/insmtx/Leros/backend/runtime/engines"
 	"github.com/ygpkg/yg-go/logs"
 )
 
@@ -149,10 +149,10 @@ func consumeEvents(ctx context.Context, emitter *events.Emitter, handle *engines
 			return consumed, fmt.Errorf("%s", event.Content)
 		case events.EventMessageDelta:
 			if strings.TrimSpace(event.Content) != "" {
-			_ = emitter.Emit(ctx, &events.Event{
-				Type:    events.EventMessageDelta,
-				Content: event.Content,
-			})
+				_ = emitter.Emit(ctx, &events.Event{
+					Type:    events.EventMessageDelta,
+					Content: event.Content,
+				})
 				if !resultSeen {
 					result.WriteString(event.Content)
 				}
