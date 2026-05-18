@@ -23,6 +23,8 @@ type Subscriber interface {
 	// startSeq 指定起始序列号，小于等于 startSeq 的消息不会被投递。
 	// startSeq 为 0 时仅投递订阅之后的新消息。
 	SubscribeFrom(ctx context.Context, topic string, startSeq int64, handler func(msg *nats.Msg)) error
+	// SubscribeDurable 使用持久化 consumer 订阅主题，重启后从最后 ack 位置继续投递。
+	SubscribeDurable(ctx context.Context, topic string, durableName string, handler func(msg *nats.Msg)) error
 }
 
 // EventBus 组合了发布和订阅能力，提供完整的事件总线功能

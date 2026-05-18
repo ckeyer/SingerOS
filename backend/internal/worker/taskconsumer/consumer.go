@@ -63,11 +63,12 @@ func (c *Consumer) TaskTopic() string {
 	return topic
 }
 
-// Start subscribes to the worker task topic.
+// Start subscribes to the worker task topic with a durable consumer.
 func (c *Consumer) Start(ctx context.Context) error {
 	topic := c.TaskTopic()
-	logs.InfoContextf(ctx, "Starting worker task subscription: %s", topic)
-	return c.subscriber.Subscribe(ctx, topic, func(msg *nats.Msg) {
+	durableName := fmt.Sprintf("worker-org-%d-worker-%d", c.cfg.OrgID, c.cfg.WorkerID)
+	logs.InfoContextf(ctx, "Starting worker task subscription: %s (durable=%s)", topic, durableName)
+	return c.subscriber.SubscribeDurable(ctx, topic, durableName, func(msg *nats.Msg) {
 		logs.InfoContextf(ctx, "Received worker task event from topic: %s", topic)
 		if err := c.handleEvent(ctx, msg); err != nil {
 			logs.ErrorContextf(ctx, "Failed to handle worker task: %v", err)

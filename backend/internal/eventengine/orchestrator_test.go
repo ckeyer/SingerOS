@@ -79,6 +79,10 @@ func (ms *mockSubscriber) SubscribeFrom(ctx context.Context, topic string, start
 	return nil
 }
 
+func (ms *mockSubscriber) SubscribeDurable(ctx context.Context, topic string, durableName string, handler func(msg *nats.Msg)) error {
+	return nil
+}
+
 type mockRunner struct{}
 
 var _ agent.Runner = (*mockRunner)(nil)

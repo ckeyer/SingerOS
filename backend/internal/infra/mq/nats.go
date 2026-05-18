@@ -242,6 +242,35 @@ func (p *natsPublisher) Subscribe(ctx context.Context, topic string, handler fun
 	return p.SubscribeWithContext(ctx, topic, handler)
 }
 
+// SubscribeDurable implements the eventbus.Subscriber interface.
+func (p *natsPublisher) SubscribeDurable(ctx context.Context, topic string, durableName string, handler func(msg *nats.Msg)) error {
+	p.mu.Lock()
+	if p.closed {
+		p.mu.Unlock()
+		return fmt.Errorf("NATS client is closed")
+	}
+	p.mu.Unlock()
+
+	sub, err := p.js.Subscribe(topic, func(msg *nats.Msg) {
+		handler(msg)
+		if err := msg.Ack(); err != nil {
+			logs.WarnContextf(ctx, "Failed to ack durable message on '%s': %v", topic, err)
+		}
+	}, nats.Durable(durableName), nats.AckExplicit(), nats.Context(ctx))
+	if err != nil {
+		return fmt.Errorf("failed to subscribe to '%s' (durable=%s): %w", topic, durableName, err)
+	}
+
+	<-ctx.Done()
+
+	if err := sub.Unsubscribe(); err != nil {
+		logs.WarnContextf(ctx, "Failed to unsubscribe from topic '%s': %v", topic, err)
+	}
+	logs.InfoContextf(ctx, "Unsubscribed from topic: %s", topic)
+
+	return ctx.Err()
+}
+
 // SubscribeFrom implements the eventbus.Subscriber interface.
 // startSeq == 0 时使用 DeliverNew 仅投递新消息；
 // startSeq > 0 时使用 OrderedConsumer（DeliverAll），由 handler 自行过滤。
